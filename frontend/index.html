@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do App</title>
+  </head>
+  <body>
+    <h1>Ma To-Do List</h1>
+    <ul id="task-List"></ul>
+
+    <h2></h2>
+    <form id="task-form">
+      <input type="text" id="title" placeholder="Titre" required />
+      <input type="text" id="description" placeholder="Description" required />
+      <button type="submit">Ajouter</button>
+    </form>
+
+    <script>
+      // Appel l'API du backend Java
+      fetch("http://localhost:8080/api/tasks")
+        .then((response) => response.json()) // transforme la reponse en JSON
+        .then((data) => {
+          const taskList = document.getElementById("task-List");
+          taskList.innerHTML = ""; // cible la liste <ul>
+
+          //Pour chaque tâche reçue, on crée un <li> avec titre et description
+          data.ForEach((task) => {
+            const li = document.createElement("li");
+            li.textContent = `${task.title} : ${task.description}`;
+            taskList.appendChild(li); // on ajoute l'élément à la page
+          });
+        })
+        //fetch("http://localhost:8080/api/tasks")
+        // .then((response) => response.json()) // <-- transforme en JSON
+        // .then((data) => {
+        // console.log(data); // vérifie que c'est bien un tableau
+        //data.forEach((task) => {
+        //   console.log(task.title); // ou ton code d’affichage
+        //  });
+        // })
+        .catch((error) => {
+          console.error("Erreur lors du chargement des tâches :", error);
+        });
+
+      document
+        .getElementById("task-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const title = document.getElementById("title").value;
+          const description = document.getElementById("description").value;
+
+          const task = {
+            title,
+            description,
+            complete: false,
+          };
+
+          fetch("http://localhost:8080/api/tasks", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(task),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Erreur lors de l'ajout");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              alert("Tâche ajoutée !");
+              location.reload(); // recharge la page pour voir une nouvelle tâche
+            })
+            .catch((error) => {
+              console.error("Erreur:", error);
+            });
+        });
+    </script>
+  </body>
+</html>

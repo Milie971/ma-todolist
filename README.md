@@ -2,7 +2,7 @@
 
 Ce projet est une application web simple de gestion de tâches (To-Do List) développée avec :
 
-- 🎯 "Backend" : Java + Spring Boot
+- 🎯 Backend : Java + Spring Boot
 - 🖥️ Frontend : JavaScript (vanilla ou futur framework)
 - 📡 API REST entre les deux
 

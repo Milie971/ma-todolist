@@ -16,6 +16,8 @@
       <button type="submit">Ajouter</button>
     </form>
 
+    <div id="message"></div>
+
     <script>
       // Appel l'API du backend Java
       fetch("http://localhost:8080/api/tasks")
@@ -25,7 +27,7 @@
           taskList.innerHTML = ""; // cible la liste <ul>
 
           //Pour chaque tâche reçue, on crée un <li> avec titre et description
-          data.ForEach((task) => {
+          data.forEach((task) => {
             const li = document.createElement("li");
             li.textContent = `${task.title} : ${task.description}`;
             taskList.appendChild(li); // on ajoute l'élément à la page
@@ -54,7 +56,7 @@
           const task = {
             title,
             description,
-            complete: false,
+            completed: false,
           };
 
           fetch("http://localhost:8080/api/tasks", {
@@ -79,5 +81,6 @@
             });
         });
     </script>
+    <script src="app.js"></script>
   </body>
 </html>
